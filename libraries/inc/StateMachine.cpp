@@ -3,7 +3,7 @@
 #include "StateMachine.h"
 #include "Shooting.h"
 #include "States.h"
-
+//#include "States_debug.h"
 
 /* ================================================== */
 /* ----- Initialize the state machines associated with the 4 stages of this program ----- */
@@ -14,7 +14,9 @@
 //Calibration State Machine
 //if add a new input, only have to worry about adding an additional memeber at end
 //Events are           NOTHING, BUMP, LINE_DETECT, GOAL_REACHED (only 4 inputs here)
-STyp CSM[5] = {
+
+
+STyp CSM[7] = {
     //{"Init_Cal", &SoftLeft, &closingFnc, {"Theta",{0,0,NORTH}}, {Init_Cal, Collision, Lineup_Cal, Lineup_Cal}},
     {"Init_Cal", &SoftLeft, &closingFnc, {"None",{0,0,0}}, {Init_Cal, Collision, Lineup_Cal, Fwd_Cal}},
     {"Fwd_Cal", &Forward, &closingFnc, {"None",{0,0,0}}, {Fwd_Cal, Collision, Lineup_Cal, Fwd_Cal} }, 
@@ -32,6 +34,9 @@ STyp CSM[5] = {
     {"Collision", &Reverse, &closingFnc, {"None",{0,0,0}}, {Collision, Init_Cal, Collision, Init_Cal}}
 };
 
+
+
+
 //Events are           NOTHING, BUMP, LINE_DETECT, GOAL_REACHED (only 4 inputs here)
 //STyp C2SM[6] = {
 //    {"Init_Cal2", &SoftRight, &closingFnc, {"Theta",{0,0,SOUTH}}, {Init_Cal2, Init_Cal2, Init_Cal2, Fwd_Cal2}},
@@ -43,6 +48,7 @@ STyp CSM[5] = {
 //};
 
 //Events are           NOTHING, BUMP, LINE_DETECT, GOAL_REACHED (only 4 inputs here)
+
 STyp NSM[4] = {
     {"Init1_Nav", &Forward, &closingFnc, {"Y",{0,Origin_y,0}}, {Init1_Nav, Init1_Nav, Init1_Nav, Init2_Nav}},
     {"Init2_Nav", &SoftLeft, &closingFnc, {"Theta",{0,0,EAST}}, {Init2_Nav, Init2_Nav, Init2_Nav, Init3_Nav}},
@@ -50,7 +56,9 @@ STyp NSM[4] = {
     {"Complete_Nav", &advance, &closingFnc, {"None",{0,0,0}}, {Complete_Nav, Complete_Nav,  Complete_Nav, Complete_Nav} }  //change rstage
 };
 
+
 //Events are           NOTHING, BUMP, SHOT_MISSED, SHOT_MADE. these are sEvents not rEvents, though.
+
 STyp SSM[3] = {
     {"Init_Shooting", &Shoot, &getLastBasket, {"None",{0,0,0}}, {Check_Shot, Check_Shot, Check_Shot, Check_Shot}},
     {"Check_Shot", &dummy, &closingFnc, {"None",{0,0,0}}, {Check_Shot, Check_Shot, Init_Shooting, Complete_Shooting}},
@@ -58,7 +66,14 @@ STyp SSM[3] = {
 };
 
 
-//LEFTOVER CODE
+
+// LEFTOVER CODE, incorporate into StateMachine_debug.h
+
+//Simple Calibration Stage implementation
+//STyp CSM[2] = {
+//    {"Init_Cal", &closingFnc, &closingFnc, {"None",{0,0,0}}, {Init_Cal,Fwd_Cal}},
+//    {"Fwd_Cal",  &closingFnc, &closingFnc, {"None",{0,0,0}}, {Init_Cal, Fwd_Cal}}
+//};
 
 /*
         count++;

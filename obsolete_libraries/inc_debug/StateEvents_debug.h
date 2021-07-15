@@ -1,8 +1,9 @@
-#ifndef STATE_EVENTS_H_
-#define STATE_EVENTS_H_
+#ifndef STATE_EVENTS_DEBUG_H_
+#define STATE_EVENTS_DEBUG_H_
 
   
-#include "States.h"  // because of STyp being defined in States.h
+//#include "States.h"  // because of STyp being defined in States.h
+#include "States_debug.h"
 
 //maybe split this back up into Cal Nav and Shooting Event but for right now it's not that big
 

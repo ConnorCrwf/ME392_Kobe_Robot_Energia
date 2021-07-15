@@ -38,6 +38,7 @@
 #ifndef DEQUE_H__
 #define DEQUE_H__
 
+//#include <Energia.h>  either/or works
 #include <Arduino.h>
 
 

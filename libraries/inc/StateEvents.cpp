@@ -5,6 +5,7 @@
 #include "Odometry.h"
 #include "Line_Sensor.h"
 #include "Infrared.h"
+#include "Deque.h"
 
 //Queue<int> lineQueue;
 #define LINE_DEQUE_SIZE 10

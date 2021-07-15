@@ -1,4 +1,5 @@
 #include "Infrared.h"
+#include "Energia.h"
 
 #define IR_DEQUE_SIZE 10
 
@@ -11,7 +12,8 @@ Deque<int> IRData_Center = Deque<int>(IR_DEQUE_SIZE);  //basket 1
 Deque<int> IRData_Right = Deque<int>(IR_DEQUE_SIZE);  //basket 2
 
 void setupIRsensors() {
-    for (int i = 0; i < IR_DEQUE_SIZE + 1; i++) {
+    for (int i = 0; i < (IR_DEQUE_SIZE + 1); i++) {
+        //Serial.println("");
         IRData_Left.push_back(1000);
         IRData_Center.push_back(1000);
         IRData_Right.push_back(1000);
@@ -23,6 +25,7 @@ int IRData_CenterAve = 1000;
 int IRData_RightAve = 1000;
 
 //TODO try making deque a pointer again
+
 void Calc_IR_Ave(Deque<int> IRData, int* IRData_Ave, int pin) {
     //
     //read IR sensor,
@@ -30,13 +33,13 @@ void Calc_IR_Ave(Deque<int> IRData, int* IRData_Ave, int pin) {
     uint32_t IRval = analogRead(pin);
     //Be careful with this
     delay(100);
-    /*Serial.print("IRval is : ");
-    Serial.println(IRval);*/
+    Serial.print("IRval is : ");
+    Serial.println(IRval);
     //even though it's initialized to a certain size, count is only concerned with what has been added to it after intilization
     //could also do (*IRData).count because otherwise it would do *IRData.count
     int sizeIRData = IRData.count();
-    /*Serial.print("Size of IRData is : ");
-    Serial.println(sizeIRData);*/
+    //Serial.print("Size of IRData is : ");
+    //Serial.println(sizeIRData);
     IRData.pop_front();
     IRData.push_back(IRval);
 
@@ -49,6 +52,7 @@ void Calc_IR_Ave(Deque<int> IRData, int* IRData_Ave, int pin) {
     *IRData_Ave = sum / sizeIRData;
 
 }
+
 
 int Infrared_GetLeft(void) {
     return IRData_LeftAve;

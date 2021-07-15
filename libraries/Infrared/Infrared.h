@@ -19,7 +19,7 @@ int Get_Basket();
 
 bool checkCenterIR();
 bool checkLeftIR();
-bool checkRightIR()
+bool checkRightIR();
 
 
 #endif

@@ -7,7 +7,6 @@
 #include "StateMachine.h"
 #include "Shooting.h"
 #include "Infrared.h"
-#include "Deque.h"
 #include "Energia.h"
 
 static enum StateMachineStage rStage;

@@ -1,5 +1,5 @@
-#ifndef STATES_H_
-#define STATES_H_
+#ifndef STATES_DEBUG_H_
+#define STATES_DEBUG_H_
 
 //TODO split up into a Command Pointer library, a closing function lib, an event check lib
 
@@ -12,8 +12,8 @@
 
 //#include "StateEvents.h"
 
-extern int Origin_x;
-extern int Origin_y;
+//extern int Origin_x;
+//extern int Origin_y;
 
 //maybe move these to State Machine library
 enum StateMachineStage {
@@ -49,7 +49,7 @@ struct State{
     //if rEvent is INIT for example, then that returns/evaluates to 0 since that is the first position of the enum CalibrationEvent
     //if rEvent is RVRS for example, then that evaluates to 1
     //based on the definition that is stored in the specific 
-    const struct State *Next[5]; 
+    const struct State *Next[2];
     //Where is the connection between this integer array and the the fact that second position of the RobotState struct is also an integer array rCalEvent?
     //const uint8_t next_state_by_event[4];
     //an address to a function is the third part of this struct and then it is de-referenced here to in order to be run
