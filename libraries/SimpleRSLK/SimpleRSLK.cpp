@@ -256,3 +256,21 @@ void waitBtnPressed(uint8_t btnPin, String msg,int8_t ledPin) {
 	/* Wait for a short period to avoid button debounce */
 	delay(50);
 }
+
+bool checkBtnPressed(uint8_t btnPin) {
+	uint8_t btnCnt = 0;
+	//Serial.println("Button Value is");
+	//Serial.println(digitalRead(btnPin));
+	while (digitalRead(btnPin) == 0) {
+		delay(25);
+		btnCnt++;
+		//half a second check
+		if (btnCnt >= 20) {
+			return true;
+		}
+	}
+	if (btnCnt < 20) {
+		return false;
+	}
+
+}

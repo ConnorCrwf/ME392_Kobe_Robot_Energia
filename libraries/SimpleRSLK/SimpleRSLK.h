@@ -215,6 +215,10 @@ void waitBtnPressed(uint8_t btnPin, String msg = "",int8_t ledPin = 0);
 ///  All elements will by default be given a value of 0.
 ///
 ///  Initializes arrays to be used to store line sensor's min and max values.
+
+bool checkBtnPressed(uint8_t btnPin);
+
+
 void clearMinMax(uint16_t *sensorMin,uint16_t *sensorMax);
 
 /// \brief Update line sensor's min and max values array based on current data.

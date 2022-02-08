@@ -2,6 +2,8 @@
   AnalogReadSerial
   Reads an analog input on pin A3, prints the result to the serial monitor.
   Attach the center pin of a potentiometer to pin A3, and the outside pins to ~3V and ground.
+  Signal will go down to 0 once the transmitted IR signal is detected by the Receiver
+  Need to cover up with aluminum foil and make sure there is no gap where an IR signal could creep in. They can get in the tiniest of spots
   
   Hardware Required:
   * MSP-EXP430G2 LaunchPad
@@ -10,12 +12,11 @@
 
   This example code is in the public domain.
 */
-// A4 = 33 = P5_1
-// A15 = 2 =  P6_0
-// A22 = P8_3 = 60
 
-//int leftSensor = 60; 
-//int rightSensor = 33; 
+//Hook up Power from the sensor board to 3.3 Volts
+//Press the S2 switch to go between different beacons, use the Beacon Flash code
+int centerSensorPin = 60; //P8.3
+int rightSensorPin = 33; //P5.1
 
 // the setup routine runs once when you press reset:
 void setup() {
@@ -25,19 +26,17 @@ void setup() {
 
 // the loop routine runs over and over again forever:
 void loop() {
-  // read the input on analog pin A4:
-  int leftSensorValue = analogRead(A4);
-//   int rightSensorValue = analogRead(A16); 
+  int centerSensorValue = analogRead(centerSensorPin);
+//   int rightSensorValue = analogRead(rightSensorPin); 
 //   int centerSensorValue = analogRead(A21); 
   // print out the value you read:
-Serial.print("Left:  ");
-    Serial.print(leftSensorValue);
-    /*
-     Serial.print("  Center:  ");
-  Serial.print(centerSensorValue);
-    Serial.print("  Right:  ");
-  Serial.print(rightSensorValue);
-  */
-Serial.println();
+    Serial.print("Center:  ");
+    Serial.print(centerSensorValue);
+//    Serial.print("  Right:  ");
+//    Serial.print(rightSensorValue);
+    //     Serial.print("  Center:  ");
+//  Serial.print(centerSensorValue);
+ 
+  Serial.println();
   delay(100);        // delay in between reads for stability
 }
