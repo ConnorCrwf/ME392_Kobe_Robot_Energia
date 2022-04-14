@@ -24,12 +24,12 @@ enum ShootingEvent {
 };
 
 void checkBump(Event& event);
-void checkOdomGoal(STyp* state, Event& event);
+void checkOdomGoal(STyp* state, Event& event, bool debug);
 void checkCenterIRGoal(int* angle, Event& event);
-void checkLine(Event& event);
+void checkLine(Event& event, bool debug);
 void checkShot(ShootingEvent& event, int& last_basket, long& shotTime);
 
-void updateLineDataHistory();
+void updateLineDataHistory(uint32_t linePos);
 int getNonZeroCount();
 
 #endif

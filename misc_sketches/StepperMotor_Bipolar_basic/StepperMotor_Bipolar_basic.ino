@@ -2,7 +2,7 @@
 //Refer to picture for pinout and schematic
 //Bipolar uses 4 wires and has alot more torque
 
-//Install the Arduino Stepper Library into the Energia IDEA, watch a youtube videon on how to do this or read a tutorial
+//Install the Arduino Stepper Library into the Energia IDEA, watch https://www.youtube.com/watch?v=0qwrnUeSpYQ (I think)
 // Include the Arduino Stepper Library
 #include <Stepper.h>
 

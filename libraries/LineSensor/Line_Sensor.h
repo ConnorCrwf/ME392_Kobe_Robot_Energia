@@ -5,6 +5,6 @@
 
 void setupLineSensor();
 void floorCalibration();
-uint32_t readLineSensor();
+uint32_t readLineSensor_Kobe();
 
 #endif

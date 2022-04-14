@@ -18,7 +18,7 @@
 
 STyp CSM[7] = {
     //{"Init_Cal", &SoftLeft, &closingFnc, {"Theta",{0,0,NORTH}}, {Init_Cal, Collision, Lineup_Cal, Lineup_Cal}},
-    {"Init_Cal", &SoftLeft, &closingFnc, {"None",{0,0,0}}, {Init_Cal, Collision, Lineup_Cal, Fwd_Cal}},
+    {"Init_Cal", &closingFnc, &closingFnc, {"None",{0,0,0}}, {Init_Cal, Collision, Init_Cal, Fwd_Cal}},
     {"Fwd_Cal", &Forward, &closingFnc, {"None",{0,0,0}}, {Fwd_Cal, Collision, Lineup_Cal, Fwd_Cal} }, 
     //rotate handles the transition to Complete_Cal and Complete_Cal2 depending on the stage
     //rEvent GOAL_REACHED is set in lineup so State_Event when called next doesn't really do anything

@@ -14,6 +14,7 @@
 
 extern int Origin_x;
 extern int Origin_y;
+extern bool waitCheck;
 
 //maybe move these to State Machine library
 enum StateMachineStage {
@@ -59,16 +60,16 @@ typedef const struct State STyp;
 
 //Main State Machine Program functions
 void State_Init();
-void State_Action();
+void State_Action(bool waitCheck);
 void State_Delay();
-void State_Event();
-void State_Next();
+void State_Event(bool waitCheck);
+void State_Next(bool waitcheck);
 
 //Utility Functions
 //void Set_State(STyp* state);
 void Set_State(int index);
 void Set_Event(int index);
-bool Wait(long interval);
+bool Wait(long prev_time, long interval);
 
 //Command Pointer Functions, move these into their own Action library to simplify code reading
 void advance();

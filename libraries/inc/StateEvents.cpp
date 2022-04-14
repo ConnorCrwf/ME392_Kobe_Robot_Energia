@@ -20,25 +20,27 @@ void checkBump(Event& event) {
 }
 
 //No real reason why I'm passing in one by reference and one by pointer, idk
-void checkOdomGoal(STyp* state, Event& event) {
+void checkOdomGoal(STyp* state, Event& event, bool debug) {
     int32_t Error; // in 0.0001cm or in 2*pi/16384 radians
     int32_t tolerance;
     int curX; int curY; int curTheta;
     //read odometry always
     UpdatePosition(getEncoderLeftCnt(), getEncoderRightCnt());
-    Serial.println();
+    //Serial.println();
     curX = Odometry_GetX();
     curY = Odometry_GetY();
     curTheta = Odometry_GetAngle();
-    Serial.print("curX in our scale is : ");
-    Serial.println(curX * 0.0001);
-    Serial.print("curY in our scale is : ");
-    Serial.println(curY * 0.0001);
-    Serial.print("curTheta in our scale is : ");
-    Serial.println(curTheta * 0.000383);
-    Serial.println();
-    Serial.print("Goal Direction is: ");
-    Serial.println(state->curGoal.direction);
+    if (debug) {
+        Serial.print("curX in our scale is : ");
+        Serial.println(curX * 0.0001);
+        Serial.print("curY in our scale is : ");
+        Serial.println(curY * 0.0001);
+        Serial.print("curTheta in our scale is : ");
+        Serial.println(curTheta * 0.000383);
+        Serial.println();
+        Serial.print("Goal Direction is: ");
+        Serial.println(state->curGoal.direction);
+    }
     if (state->curGoal.direction == "None") {}
     // if statement to determine if goal has been reached; based on element of nested struct in state machine
     else if (state->curGoal.direction != "None") {
@@ -90,9 +92,14 @@ void checkCenterIRGoal(int* angle, Event& event) {
 
 }
 
-void checkLine(Event& event) {
+void checkLine(Event& event, bool debug) {
     
-    updateLineDataHistory();
+    uint32_t linePos = readLineSensor_Kobe();
+    if (debug) {
+        Serial.print("Line Pos is : ");
+        Serial.println(linePos);
+    }
+    updateLineDataHistory(linePos);
     int nonZero_count = getNonZeroCount();
     //one stray value of 2000 amonst alot of zeros would put average at 200 immediately for last 10 values
     //DONE: can probably avoid setting GOAL_REACHED in lineup function now with this check
@@ -100,12 +107,8 @@ void checkLine(Event& event) {
     else return;
 }
 
-void updateLineDataHistory()
+void updateLineDataHistory(uint32_t linePos)
 {
-    //read line sensor, still need to do setup stuff
-    uint32_t linePos = readLineSensor();
-    /*Serial.print("Line Pos is : ");
-    Serial.println(linePos);*/
     //even though it's initialized to a certain size, count is only concerned with what has been added to it after intilization
     int sizeLineData = lineData.count();
     //initialize only once

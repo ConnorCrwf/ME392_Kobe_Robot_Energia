@@ -21,7 +21,7 @@ void floorCalibration() {
     }
 }
 
-uint32_t readLineSensor()
+uint32_t readLineSensor_Kobe()
 {
     readLineSensor(sensorVal);
     readCalLineSensor(sensorVal, sensorCalVal, sensorMinVal, sensorMaxVal, lineColor);

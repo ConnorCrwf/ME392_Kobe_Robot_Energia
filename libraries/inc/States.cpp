@@ -17,6 +17,7 @@ ShootingEvent sEvent;
 //LineType LineFound = NO_LINE;
 int Origin_x;
 int Origin_y;
+bool waitCheck;
 int last_basket;
 long shotTime;        // will store last time LED was updated
 int activeBasketTheta;
@@ -43,8 +44,8 @@ void State_Init() {
 
 //TODO Do a Check here to see what Stage you are in because the pointer might not be rState
 //TODO maybe do a different prefix for state for each stage. that would simplify the confusion
-void State_Action() {
-    Serial.println(rState->stateName);
+void State_Action(bool waitCheck) {
+    if(waitCheck) Serial.println(rState->stateName);
     //char Name[15];
     //strcpy(Name, rState->stateName);
     //Serial.print("State is");
@@ -71,7 +72,10 @@ void State_Action() {
 //could write UNUSED next to each case Below
 //TODO maybe do a different prefix for each event type for each stage. that would simplify the confusion. just make sure that we still use the same number of inputs so that we can keep on using SType
 //otherwise we'll have to do checks to in State_Next and State_Action
-void State_Event() {
+void State_Event(bool waitCheck) {
+    /*Serial.print("waitCheck is: ");
+    Serial.println(waitCheck);*/
+    //if (waitCheck) previous_time = millis();
     //based on which stage you are in, will want to return a specific set of rCalEvents
     //return a boolean from each of these to be True if rEvent was changed to someting different than it was before,
     //then can just say if (checkBump(rEvent) break, then you won't have to deal with overwriting events
@@ -84,18 +88,26 @@ void State_Event() {
         case CALIB:
             //initialize to nothing. it will be overwritten if any of the other triggers happen
             rEvent = NOTHING;
-            checkBump(rEvent);
-            checkOdomGoal(rState, rEvent);
-            if (rState == Init_Cal) checkCenterIRGoal(&activeBasketTheta, rEvent); 
-            else checkLine(rEvent);
+            //checkBump(rEvent);
+            //checkOdomGoal(rState, rEvent,waitCheck);
+            checkLine(rEvent, waitCheck);
+            if (rState == Init_Cal)
+            {
+                //checkCenterIRGoal(&activeBasketTheta, rEvent);
+                //rEvent = GOAL_REACHED;
+                //checkLine(rEvent,waitCheck);
+            }
+            //else checkLine(rEvent,waitCheck);
             //will be an enum 0,1,2, or 3
-            Serial.print("State Event is: ");
-            Serial.println(rEvent);
+            if (waitCheck) {
+                Serial.print("State Event is: ");
+                Serial.println(rEvent);
+            }
             break;
         case NAVIGATION:
             //initialize to nothing. it will be overwritten if any of the other triggers happen
             rEvent = NOTHING;
-            checkOdomGoal(rState, rEvent);
+            checkOdomGoal(rState, rEvent, waitCheck);
             Serial.print("State Event First Check is: ");
             Serial.println(rEvent);
             checkBump(rEvent);
@@ -132,7 +144,7 @@ void State_Event() {
 
 //within advance(which occurs in the last state), we change the stage.should probably also change rState to a state in the next stage StateMachine
 //because if we don't then we'll be in the wronge rStage case referring to an event input that would only occur in next stage
-void State_Next() {
+void State_Next(bool waitCheck) {
     const String lastStateName = rState->stateName;
     //maybe don't need a pointer here?
     STyp* prevState = rState;
@@ -156,8 +168,8 @@ void State_Next() {
 void advance() {
     int curX;
     int curY;
-    Serial.print("rStage enum is : ");
-    Serial.println(rStage);
+    //Serial.print("rStage enum is : ");
+    //Serial.println(rStage);
     switch (rStage) {
     case CALIB:
         rStage = NAVIGATION;
@@ -208,7 +220,7 @@ void advance() {
 bool lineup_flag = false;
 void lineup() {
     //TODO instead of reading it again just use Get_LinePos() to access that private variable
-    uint32_t linePos = readLineSensor();
+    uint32_t linePos = readLineSensor_Kobe();
     //Serial.print("lineDataAverage is ");
     //Serial.println(LineDataAverage);
     static uint32_t count = 0;
@@ -417,12 +429,13 @@ void findNextLine()
 }
 
 //in milliseconds
-bool Wait(long interval)
+bool Wait(long old_time, long interval)
 {
     bool elapsed = false;
-    const long compareTime = millis();
     unsigned long currentMillis = millis();
-    long timePast = currentMillis - compareTime;
+    long timePast = currentMillis - old_time;
+    /*Serial.print("timePast is: ");
+    Serial.println(timePast);*/
     if (timePast > interval) {
         elapsed = true;
     }
